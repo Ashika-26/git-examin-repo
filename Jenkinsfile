@@ -14,9 +14,16 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy to S3') {
             steps {
-                echo 'Deploying...'
+                sh '''
+                aws s3 sync . s3://ashika-s3-pipeline \
+                --delete \
+                --exclude ".git/*" \
+                --exclude "Jenkinsfile" \
+                --exclude "README.md" \
+                --exclude ".vscode/*"
+                '''
             }
         }
     }
