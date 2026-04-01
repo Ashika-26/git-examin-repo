@@ -2,27 +2,16 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Clone Repo') {
             steps {
-                echo 'Building...'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                echo 'Testing...'
+                git 'https://github.com/your-repo.git'
             }
         }
 
         stage('Deploy to S3') {
             steps {
                 sh '''
-                aws s3 sync . s3://ashika-s3-pipeline \
-                --delete \
-                --exclude ".git/*" \
-                --exclude "Jenkinsfile" \
-                --exclude "README.md" \
-                --exclude ".vscode/*"
+                aws s3 sync . s3://your-bucket-name --delete
                 '''
             }
         }
